@@ -1,9 +1,9 @@
-var _cacheName = 'sonicmania-9282022';
+var _cacheName = 'sonicmania-20260923';
 var _cacheFiles = [
+	'index.html',
 	'RSDKv5.html',
 	'RSDKv5.js',
-	'RSDKv5.wasm',
-  'https://files.catbox.moe/xsfgty.rsdk'
+	'RSDKv5.wasm'
 ];
 	
 self.addEventListener('install', (e) => {

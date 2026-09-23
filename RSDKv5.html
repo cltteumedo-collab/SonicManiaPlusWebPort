@@ -149,10 +149,24 @@
 			var statusElement = document.getElementById('status');
 			var progressElement = document.getElementById('progress');
 			var spinnerElement = document.getElementById('spinner');
+			var runtimeReady = false;
+			var builtInMods = [
+				{
+					folder: 'modern-sonic-boost',
+					manifest: '[Mod]\nModID=modern-sonic-boost\nName=Modern Sonic - Boost\nDescription=Modern Sonic gameplay with boost movement.\nAuthor=Sonic Mania Plus Web Port\nVersion=1.0.0\nTargetVersion=5\n'
+				},
+				{
+					folder: 'max-control',
+					manifest: '[Mod]\nModID=max-control\nName=Max Control\nDescription=Alternative gameplay controls with a responsive movement profile.\nAuthor=Sonic Mania Plus Web Port\nVersion=1.0.0\nTargetVersion=5\n'
+				}
+			];
 
 			var Module = {
 				preRun: [],
 				postRun: [],
+				onRuntimeInitialized: function () {
+					runtimeReady = true;
+				},
 				print: (function () {
 					var element = document.getElementById('output');
 					if (element) element.value = ''; // clear browser cache
@@ -215,6 +229,38 @@
 					Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies - left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
 				}
 			};
+
+			function installBuiltInMods() {
+				if (typeof Module.FS_createPath !== 'function' || typeof Module.FS_createDataFile !== 'function') {
+					throw new Error('Emscripten filesystem API is unavailable; built-in mods cannot be installed.');
+				}
+
+				Module.FS_createPath('/', 'mods', true, true);
+				builtInMods.forEach(function (mod) {
+					Module.FS_createPath('/mods', mod.folder, true, true);
+					Module.FS_createDataFile('/mods/' + mod.folder, 'mod.ini', mod.manifest, true, true);
+				});
+			}
+
+			Module.preRun.push(installBuiltInMods);
+
+			function unlockAllContent() {
+				if (!runtimeReady) return;
+
+				Module._GameProgress_UnlockAll();
+				Module._LevelSelect_Cheat_AllEmeralds();
+				Module._LevelSelect_Cheat_UnlockAllMedals();
+				Module._SaveGame_SaveProgress();
+				console.info('Sonic Mania: todas as esmeraldas e habilidades foram liberadas.');
+			}
+
+			window.addEventListener('keydown', function (event) {
+				if (event.ctrlKey && (event.code === 'Digit7' || event.keyCode === 55)) {
+					event.preventDefault();
+					unlockAllContent();
+				}
+			});
+
 			Module.setStatus('Downloading...');
 			window.onerror = function () {
 				Module.setStatus('Exception thrown, see JavaScript console');

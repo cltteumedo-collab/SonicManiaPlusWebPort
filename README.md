@@ -18,6 +18,18 @@ I did not compile this myself, all I did was fork it from VinMannie, thanks to h
 >
 >  ![image](https://github.com/burnedpopcorn/SonicManiaPlusWebPort/blob/main/sm%2Bimages/sm%2Bdevmenu.png)
 
+### Built-in Dev Menu mods
+
+The web port adds these two manifests to the virtual `mods/` folder before the
+engine starts:
+
+- **Modern Sonic - Boost** (`modern-sonic-boost`)
+- **Max Control** (`max-control`)
+
+Open the Dev Menu with `Esc`, select **Mod Manager**, and enable the desired
+mod. The manifests are stored in `mods/` and are also installed at startup so
+the Emscripten build can discover them.
+
 ### To Run this yourself
 - Get the files from this repo (Code -> Download ZIP)
 - Put the files in a web server (Because this was made with Emscripten, it CANNOT be run locally with the file:// protocol, as that results in CORS issues because of Emscripten Limitations)
