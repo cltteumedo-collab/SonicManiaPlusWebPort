@@ -21,14 +21,16 @@ I did not compile this myself, all I did was fork it from VinMannie, thanks to h
 ### Built-in Dev Menu mods
 
 The web port adds these two manifests to the virtual `mods/` folder before the
-engine starts:
+engine starts. **Modern Sonic - Boost is enabled automatically when the game
+loads**; `Max Control` remains available in the Dev Menu but disabled by
+default:
 
 - **Modern Sonic - Boost** (`modern-sonic-boost`)
 - **Max Control** (`max-control`)
 
-Open the Dev Menu with `Esc`, select **Mod Manager**, and enable the desired
-mod. The manifests are stored in `mods/` and are also installed at startup so
-the Emscripten build can discover them.
+Open the Dev Menu with `Esc`, select **Mod Manager**, and change the active
+mod if needed. The manifests and the startup `modconfig.ini` are installed in
+the Emscripten virtual filesystem before the engine starts.
 
 ### To Run this yourself
 - Get the files from this repo (Code -> Download ZIP)
@@ -42,5 +44,5 @@ If you want to run this locally, use something like python to run a temporary we
 
 To do this using Python, you do by
 - Again, Get the files from this repo (Code -> Download ZIP)
-- Entering the directory containing RSDKv5.html and other files and typing the command python3 -m http.server in the linux terminal or py -m http.server for windows powershell given you installed python
-- At which point you can enter http://localhost:8000/RSDKv5.html to play the game locally
+- Entering the directory containing RSDKv5.html and other files and typing the command `python3 -m http.server 7090` in the linux terminal or `py -m http.server 7090` in Windows PowerShell, given you installed Python.
+- At which point you can enter http://localhost:7090/RSDKv5.html to play the game locally
